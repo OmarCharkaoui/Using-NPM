@@ -12,4 +12,4 @@ Install Packages/Modules like ( jquery &amp; sass ... ) Using NPM and Working Su
 ### using package.json Scritps https://youtu.be/_cNT1SK53uk
 
 # Part 2-2
- ### https://youtu.be/IZykMmVhLko
+###  using package.json Scritps https://youtu.be/IZykMmVhLko

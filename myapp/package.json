@@ -1,0 +1,26 @@
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:bro": "browserify js/change_bg.js -o output/output.js",
+    "build:watch": "watchify js/change_bg.js -o output/output.js",
+    "build:sass":"sass --watch sass/myStyle.scss output/output.css",
+    "build:server": "browser-sync start --server -w",
+    "run_app": "run-p build:*"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.4.0"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.5",
+    "browserify": "^16.2.3",
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.19.0",
+    "watchify": "^3.11.1"
+  }
+}

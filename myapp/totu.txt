@@ -1,0 +1,191 @@
+  _______________Part 1 :Change Color/bgcolor using jquery (npm) ___________________________
+
++create folder and open it using editor
+
+
++ create package.json using cmd OR Bash
+        >npm init -y
+
++ install Jquery using npm
+ > npm install jquery --save
+
++ Create  file inside Folder js
+        > js/changeColor.js
+
++ Create index.html and add a div
+                <div id="change_color">Change Color div</div>
+
+  + require jquery into file and change color to something              
+
++ include changeColor.js to html and execute your code
+
+
++ error : > require is not defined  cause
+(Browsers don't have the require method defined) 
+
++ you need to  install browserify
+        > npm install  browserify --save-dev
+
++ Create output.js inside Folder output
+
+     Then type  > browserify 'starting point' -o 'output'
+
++ Replace Script ChangeColor.js to  output.js file into html
+and see code now
+
+
++ create another File 'change_bg.js' and  use jquery to change bg color
+    > use  module.exports 
+
++ you see every time when I changing something color/bg I need to Type 
+
+    >  
+
+
+            (starting point ==> change_bg.js -> depend -> chnageColor.js )
+             ( so starting point is 'change_bg.js')
+
++ So you need watchify to watching your change Code auto without typing every time  browserify
+
+    > npm install watchify --save-dev
+    > watchify 'starting point' -o 'output'
+
+_______________Part 2 :Using package.json Scripts___________________________
+
++ Close the editor and open again 
+
+    TO use APPlication again  ===> you need to type again 
+
+    > browserify 'starting point' -o 'output'
+    > watchify 'starting point' -o 'output'
+
+ +  So we should use scripts to know how we use our App
+
+            inside package.json  scripts  you can add 
+
+            "brow" : "browserify js/change_bg.js -o output/output.js"
+            "watch" : "watchify js/change_bg.js -o output/output.js"
+
++ now close the editor and open again 
+        instead typing :
+             > browserify 'starting point' -o 'output'
+             > watchify 'starting point' -o 'output'
+
+       we Type :
+             > npm run 'brow' 
+             > npm run 'watch' 
+
++ to stop terminal executed type  ctrl + c
+
++ now the problem is we need type Two command in terminal to see The result
+
+        > npm run 'brow' 
+        > npm run 'watch' 
+
+   we Need to edit the scripts and add one command to do 2 task :
+
+                    "run_app": "task 1 && task 2"   ( && ==> for sequential execution )
+                                OR
+                    "run_app": "task 1 & task 2"     ( & ==> for for parallel execution. )
+
+ex : 
+ "run_app": "browserify js/change_bg.js -o output/output.js & watchify js/change_bg.js -o output/output.js "
+
+
++ Now you see i open the app with index.html 
+
+        My goal is when  open my app i type in terminal 2 command and my app executed
+         without open the index.html
+
+                Like :
+                > npm run run_app
+                > npm run liveServer
+
++ So To achieve that we need : browser-sync package
+        first Type :
+                        > npm install browser-sync --save-dev
+
+        Second : 
+        add Into Scripts => "liveServer" : "browser-sync  start --server -w"==>
+
+ + now close the editor and open again and type
+
+        > npm run run_app
+        > npm run liveServer 
+
+        Note : You need to open another terminal to type second commande  'npm run liveServer'.
+
++ Now all work Good . But We need one command to do all tasks ex :
+
+                > npm run run_app =====> Task 1(browserify) + task 2(watchify) + task 3(liveServer);
+
+But There a problem when you do that change let's  discover it : 
+
+    First : edit Scripts to :
+
+"run_app": "browserify js/change_bg.js -o output/output.js && watchify js/change_bg.js -o output/output.js && browser-sync  start --server -w""browserify js/change_bg.js -o output/output.js & watchify js/change_bg.js -o output/output.js & browser-sync  start --server -w"
+
+   Second :  Run command npm run run_app  
+
+   OH No ): The Browser not open to see my app 
+
+   Because : 'watchify' Still running and last task 'browser-sync' cant run
+                
+                if you open index.html the app work well.
+
+                        But not what i want.
+        
+
+ --------------------Solution:
+
+ + You need To install another package call 'npm-run-all'
+
+        > npm install npm-run-all --save-dev
+
++ now edit scripts TO 
+
+ "scripts": {
+    "build:brow":"browserify js/change_bg.js -o output/output.js",
+    "build:watch":"watchify js/change_bg.js -o output/output.js",
+    "build:server":"browser-sync  start --server -w",
+    "run_app": "run-p build:* "
+  }, 
+
+  "run_app": "run-p build:*"
+        run-p : is for parallel
+        build:* === Same AS ==> "run_app": "run-p  build:brow build:watch build:server " 
+
++ now run 
+        > npm run run_app
+ -------------------------------Now all working Good-------------------------
+
+NOTE: If you want copy This App to another File .Just Copy all folder without 
+        node_modules
+
+        + Then open terminal and type
+
+                > npm install
+
+         and to start your app type
+         
+                > npm run run_app 
+
+
+----------Bonus Install Sass
+
+we need install sass first
++ adding Sass to your App.
+
+        > create file inside folder 'sass/myStyle.scss'
+        > add file inside folder output/output.css
+
+add to your Scripts :
+                + "build:sass":"sass --watch sass/myStyle.scss output/output.css"
+
+                + add into "run_app":build:sass
+
+                + include output.css into html 
+        
+        Finally Run the App and test Your APP
+
+                Thanks For Watching & sorry for my language
